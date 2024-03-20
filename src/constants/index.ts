@@ -33,3 +33,35 @@ export const MusicPlaylist = [
     audio: audioFiles.WheelmanMainTheme,
   },
 ];
+
+export const skinsList = [
+  { waveColor: "#1F262E", progressColor: "#66b2ff" },
+  {
+    waveColor: "#DDD0C8",
+    progressColor: "#323232",
+  },
+  {
+    waveColor: "#FAE7A5",
+    progressColor: "#B6E1E7",
+  },
+  {
+    waveColor: "#C5ADC5",
+    progressColor: "#B2B5E0",
+  },
+  {
+    waveColor: "#FFCE32",
+    progressColor: "#1D63FF",
+  },
+  {
+    waveColor: "#FF595A",
+    progressColor: "#CAC0B3",
+  },
+  {
+    waveColor: "#0C1A1A",
+    progressColor: "#6ACFC7",
+  },
+  {
+    waveColor: "#FFAB00",
+    progressColor: "#DD2E18",
+  },
+];

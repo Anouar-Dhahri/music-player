@@ -8,11 +8,13 @@ import {
 } from "@ant-design/icons";
 import WavesurferPlayer from "@wavesurfer/react";
 import coverImages from "../../assets";
+import useSkinStore from "../../store/skinStore";
 
 function AudioPlayer({ selectedAudio }: any) {
   const [wavesurfer, setWavesurfer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { skin } = useSkinStore();
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,10 +36,13 @@ function AudioPlayer({ selectedAudio }: any) {
   }, [selectedAudio]);
 
   const onReady = (ws: any) => {
+    console.log("ws==>", ws);
     setWavesurfer(ws);
   };
 
   const onPlayPause = () => {
+    setIsPlaying(false);
+    console.log("wavesurfer", wavesurfer)
     wavesurfer && wavesurfer.playPause();
   };
 
@@ -81,6 +86,9 @@ function AudioPlayer({ selectedAudio }: any) {
               ? "200px"
               : "150px",
           borderRadius: "50%",
+          border: "2px solid #1F262E",
+          transform: isPlaying ? "rotate(360deg)" : "none",
+          animation: isPlaying ? "rotate 2s linear infinite" : "none",
         }}
       />
 
@@ -92,17 +100,26 @@ function AudioPlayer({ selectedAudio }: any) {
           width: "100%",
         }}>
         <Typography.Text></Typography.Text>
+        <div
+        id="waveSurferContainer"
+        style={{
+          width: "100%",
+          maxWidth: "90%", // Limit the maximum width if needed
+        }}
+      >
         <WavesurferPlayer
-          width={500}
+          // key={waveSurferWidth}
+          // width={waveSurferWidth}
           height={100}
-          waveColor="violet"
-          progressColor="#F22121"
+          waveColor={skin.waveColor}
+          progressColor={skin.progressColor}
           url={selectedAudio?.audio}
           onReady={onReady}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           autoplay={true}
         />
+        </div>
         <Typography.Text></Typography.Text>
       </div>
       <div
