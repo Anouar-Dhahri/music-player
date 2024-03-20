@@ -15,7 +15,8 @@ function AudioPlayer({ selectedAudio }: any) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { skin } = useSkinStore();
-
+  const [songDuration, setSongDuration] = useState("00:00");
+  const [currentTime, setCurrentTime] = useState("00:00");
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -35,14 +36,31 @@ function AudioPlayer({ selectedAudio }: any) {
     }
   }, [selectedAudio]);
 
+  const formatDuration = (durationInSeconds: number) => {
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = Math.floor(durationInSeconds % 60);
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
+
   const onReady = (ws: any) => {
     console.log("ws==>", ws);
+    const durationInSeconds = ws.getDuration();
+    setSongDuration(formatDuration(durationInSeconds));
     setWavesurfer(ws);
+  };
+
+  const onAudioprocess = (ws: any) => {
+    if (ws) {
+      const currentTimeInSeconds = ws.getCurrentTime();
+      setCurrentTime(formatDuration(currentTimeInSeconds));
+    }
   };
 
   const onPlayPause = () => {
     setIsPlaying(false);
-    console.log("wavesurfer", wavesurfer)
+    console.log("wavesurfer", wavesurfer);
     wavesurfer && wavesurfer.playPause();
   };
 
@@ -92,35 +110,36 @@ function AudioPlayer({ selectedAudio }: any) {
         }}
       />
 
+      <div style={{ width: "100%" , textAlign:"center"}}>
+        <Typography.Text style={{ fontWeight: 700, fontSize: "2rem" }}>
+          {" "}
+          {currentTime} | {songDuration}
+        </Typography.Text>
+      </div>
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "2rem",
           width: "100%",
         }}>
-        <Typography.Text></Typography.Text>
         <div
-        id="waveSurferContainer"
-        style={{
-          width: "100%",
-          maxWidth: "90%", // Limit the maximum width if needed
-        }}
-      >
-        <WavesurferPlayer
-          // key={waveSurferWidth}
-          // width={waveSurferWidth}
-          height={100}
-          waveColor={skin.waveColor}
-          progressColor={skin.progressColor}
-          url={selectedAudio?.audio}
-          onReady={onReady}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          autoplay={true}
-        />
+          id="waveSurferContainer"
+          style={{
+            width: "95%",
+            maxWidth: "95%", // Limit the maximum width if needed
+          }}>
+          <WavesurferPlayer
+            // key={waveSurferWidth}
+            // width={waveSurferWidth}
+            height={100}
+            waveColor={skin.waveColor}
+            progressColor={skin.progressColor}
+            url={selectedAudio?.audio}
+            onReady={onReady}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            autoplay={true}
+            onAudioprocess={onAudioprocess}
+          />
         </div>
-        <Typography.Text></Typography.Text>
       </div>
       <div
         style={{
