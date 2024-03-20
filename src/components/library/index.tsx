@@ -1,17 +1,28 @@
 import React from "react";
-import { Drawer, Flex } from "antd";
+import { Drawer, Flex, Typography, Divider } from "antd";
 import { MusicPlaylist } from "../../constants";
 import MusicItem from "./musicItem";
+import useThemeStore from "../../store/themeStore";
 
 function Library({ open, handleDrawer, handleSelectedSong }: any) {
+  const { darkMode } = useThemeStore();
   return (
     <Drawer
-      title="Library"
       placement="left"
       closable={false}
       onClose={handleDrawer}
       open={open}
-      key="left">
+      key="left"
+      style={{ backgroundColor: !darkMode ? "#FFF" : "#101519" }}>
+      <Typography.Title
+        style={{
+          fontSize: "2rem",
+          fontWeight: 700,
+          color: darkMode ? "#aebacb" : "#303740",
+        }}>
+        PlayList
+      </Typography.Title>
+      <Divider />
       <Flex vertical={true} gap={10}>
         {MusicPlaylist?.map((data: any, index: any) => (
           <MusicItem

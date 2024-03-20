@@ -28,8 +28,8 @@ export const MusicPlaylist = [
   },
   {
     cover: coverImages.WheelmanMainTheme,
-    name: "WheelmanMain Main Theme",
-    artist: "",
+    name: "Loading Theme",
+    artist: "Wheelman OST",
     audio: audioFiles.WheelmanMainTheme,
   },
 ];

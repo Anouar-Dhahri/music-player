@@ -12,7 +12,21 @@ import coverImages from "../../assets";
 function AudioPlayer({ selectedAudio }: any) {
   const [wavesurfer, setWavesurfer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  console.log("windowWidth==>", windowWidth);
   useEffect(() => {
     if (selectedAudio) {
       setIsPlaying(true);
@@ -31,18 +45,41 @@ function AudioPlayer({ selectedAudio }: any) {
     <Layout.Content
       style={{
         backgroundColor: "#FFF",
-        marginTop: "2rem",
+        margin: "2rem auto",
         display: "flex",
         flexDirection: "column",
-        gap: "1rem",
+        gap: "2rem",
         justifyContent: "center",
         alignItems: "center",
+        borderRadius: "12px",
+        ...(windowWidth <= 600 && {
+          width: "90%",
+        }),
+        ...(windowWidth > 600 &&
+          windowWidth <= 1200 && {
+            // Add specific styles for medium screens if needed
+            width: "70%",
+          }),
+        ...(windowWidth > 1200 && {
+          // Add specific styles for large screens and above if needed
+          width: "50%",
+        }),
       }}>
       <img
         src={selectedAudio ? selectedAudio?.cover : coverImages.mainCover}
         style={{
-          width: "300px",
-          height: "300px",
+          width:
+            windowWidth > 1200
+              ? "250px"
+              : windowWidth > 600 && windowWidth <= 1200
+              ? "200px"
+              : "150px",
+          height:
+            windowWidth > 1200
+              ? "250px"
+              : windowWidth > 600 && windowWidth <= 1200
+              ? "200px"
+              : "150px",
           borderRadius: "50%",
         }}
       />
@@ -51,13 +88,15 @@ function AudioPlayer({ selectedAudio }: any) {
         style={{
           display: "flex",
           flexDirection: "row",
-          gap: "1rem",
+          gap: "2rem",
+          width: "100%",
         }}>
         <Typography.Text></Typography.Text>
         <WavesurferPlayer
-          width={700}
+          width={500}
           height={100}
           waveColor="violet"
+          progressColor="#F22121"
           url={selectedAudio?.audio}
           onReady={onReady}
           onPlay={() => setIsPlaying(true)}
@@ -69,17 +108,26 @@ function AudioPlayer({ selectedAudio }: any) {
       <div
         style={{
           display: "flex",
-          gap: "1rem",
+          gap: "2rem",
           flexDirection: "row",
           justifyContent: "space-around",
         }}>
-        <Button icon={<LeftOutlined />} size="large" />
+        <Button
+          icon={<LeftOutlined />}
+          size="large"
+          style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+        />
         <Button
           icon={isPlaying ? <PauseOutlined /> : <PlayCircleOutlined />}
           size="large"
           onClick={onPlayPause}
+          style={{ width: "50px", height: "50px", borderRadius: "10px" }}
         />
-        <Button icon={<RightOutlined />} size="large" />
+        <Button
+          icon={<RightOutlined />}
+          size="large"
+          style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+        />
       </div>
     </Layout.Content>
   );

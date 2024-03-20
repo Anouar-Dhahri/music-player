@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Flex, Typography } from "antd";
+import { Typography } from "antd";
+import useThemeStore from "../../store/themeStore";
 
 function MusicItem({ musicInfo, handleSelectedSong }: any) {
   const [isHovered, setIsHovered] = useState(false);
+  const { darkMode } = useThemeStore();
+
   return (
     <div
       onClick={() => handleSelectedSong(musicInfo)}
@@ -13,7 +16,13 @@ function MusicItem({ musicInfo, handleSelectedSong }: any) {
         gap: "10px",
         cursor: "pointer",
         padding: "10px",
-        backgroundColor: isHovered ? "#dadada" : "transparent",
+        backgroundColor:
+          darkMode && isHovered
+            ? "#1F262E"
+            : !darkMode && isHovered
+            ? "#dadada"
+            : "transparent",
+        borderRadius: "12px",
       }}>
       <img
         src={musicInfo?.cover}
@@ -29,10 +38,20 @@ function MusicItem({ musicInfo, handleSelectedSong }: any) {
           flexDirection: "column",
           justifyContent: "center",
         }}>
-        <Typography.Title style={{ fontSize: "1rem", fontWeight: 700 }}>
+        <Typography.Title
+          style={{
+            fontSize: "1rem",
+            fontWeight: 700,
+            color: darkMode ? "#aebacb" : "#303740",
+          }}>
           {musicInfo?.name}
         </Typography.Title>
-        <Typography.Text style={{ fontSize: "1rem", fontWeight: 400 }}>
+        <Typography.Text
+          style={{
+            fontSize: "1rem",
+            fontWeight: 400,
+            color: darkMode ? "#aebacb" : "#303740",
+          }}>
           {musicInfo?.artist}
         </Typography.Text>
       </div>
