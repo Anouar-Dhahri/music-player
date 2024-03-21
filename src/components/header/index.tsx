@@ -57,7 +57,7 @@ function HeaderContent({ handleDrawer }: any) {
             gap: "5px",
             marginTop: "11px",
           }}>
-          <Tooltip title="Show Music List">
+          <Tooltip title="Show Playlist">
             <Button
               size="large"
               icon={<MenuOutlined />}
