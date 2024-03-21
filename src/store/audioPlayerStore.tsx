@@ -17,7 +17,7 @@ type Store = {
   previousSong: () => void;
 };
 
-const useAudioPlayerStore = create<Store>((set) => ({
+const useAudioPlayerStore = create<Store>((set, get) => ({
   selectedAudio: null,
   currentSongIndex: null,
   startPlaying: () =>
@@ -27,20 +27,18 @@ const useAudioPlayerStore = create<Store>((set) => ({
       selectedAudio: MusicPlaylist[currentSongIdx],
       currentSongIndex: currentSongIdx,
     }),
-  nextSong: () =>
-    set((state) => {
-      const nextIdx = (state.currentSongIndex + 1) % MusicPlaylist.length;
-      console.log("nextIdx ==>", nextIdx);
-      set({ selectedAudio: MusicPlaylist[nextIdx] });
-    }),
-  previousSong: () =>
-    set((state) => {
-      const prevIdx =
-        state.currentSongIndex === 0
-          ? MusicPlaylist.length - 1
-          : state.currentSongIndex - 1;
-      set({ selectedAudio: MusicPlaylist[prevIdx] });
-    }),
+  nextSong: () => {
+    const currentSingIndex = get().currentSongIndex;
+    const nextIdx = (currentSingIndex + 1) % MusicPlaylist.length;
+    console.log("nextIdx ==>", nextIdx);
+    set({ selectedAudio: MusicPlaylist[nextIdx], currentSongIndex: nextIdx });
+  },
+  previousSong: () => {
+    const currentSingIndex = get().currentSongIndex;
+    const prevIdx =
+      currentSingIndex === 0 ? MusicPlaylist.length - 1 : currentSingIndex - 1;
+    set({ selectedAudio: MusicPlaylist[prevIdx], currentSongIndex: prevIdx });
+  },
 }));
 
 export default useAudioPlayerStore;
