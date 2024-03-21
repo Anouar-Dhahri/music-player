@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Layout,
   Flex,
@@ -23,6 +23,19 @@ function HeaderContent({ handleDrawer }: any) {
   const { darkMode, enableDarkMode, enableLightMode } = useThemeStore();
   const { changeSkin } = useSkinStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -51,28 +64,45 @@ function HeaderContent({ handleDrawer }: any) {
             style={{ fontSize: "3rem", color: !darkMode ? "#101519" : "#FFF" }}
           />
         </div>
+
         <div
           style={{
             display: "flex",
             gap: "5px",
             marginTop: "11px",
           }}>
-          <Tooltip title="Show Playlist">
-            <Button
-              size="large"
-              icon={<MenuOutlined />}
-              style={{
-                fontWeight: 500,
-                textTransform: "uppercase",
-                backgroundColor: "transparent",
-                color: "#66b2ff",
-                borderColor: darkMode ? "#1F262E" : "#C5D0E0",
-                borderRadius: "12px",
-              }}
-              onClick={handleDrawer}>
-              Library
-            </Button>
-          </Tooltip>
+          {windowWidth <= 600 ? (
+            <Tooltip title="Show Playlist">
+              <Button
+                shape="circle"
+                size="large"
+                icon={<MenuOutlined />}
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#66b2ff",
+                  borderColor: darkMode ? "#1F262E" : "#C5D0E0",
+                }}
+                onClick={handleDrawer}></Button>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Show Playlist">
+              <Button
+                size="large"
+                icon={<MenuOutlined />}
+                style={{
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  backgroundColor: "transparent",
+                  color: "#66b2ff",
+                  borderColor: darkMode ? "#1F262E" : "#C5D0E0",
+                  borderRadius: "12px",
+                }}
+                onClick={handleDrawer}>
+                Library
+              </Button>
+            </Tooltip>
+          )}
+
           <Tooltip
             title={!darkMode ? "Turn off the light" : "Turn on the light"}>
             <Button
@@ -119,7 +149,19 @@ function HeaderContent({ handleDrawer }: any) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4,1fr)",
+
+            ...(windowWidth <= 600 && {
+              gridTemplateColumns: "repeat(2,1fr)",
+            }),
+            ...(windowWidth > 600 &&
+              windowWidth <= 1200 && {
+                // Add specific styles for medium screens if needed
+                gridTemplateColumns: "repeat(3,1fr)",
+              }),
+            ...(windowWidth > 1200 && {
+              // Add specific styles for large screens and above if needed
+              gridTemplateColumns: "repeat(4,1fr)",
+            }),
             gap: "1rem",
           }}>
           {skinsList?.map((skin: any, index: number) => (
