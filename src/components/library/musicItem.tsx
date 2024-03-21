@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Typography } from "antd";
 import useThemeStore from "../../store/themeStore";
+import useAudioPlayerStore from "../../store/audioPlayerStore";
 
-function MusicItem({ musicInfo, handleSelectedSong }: any) {
+function MusicItem({ musicInfo, index }: any) {
   const [isHovered, setIsHovered] = useState(false);
   const { darkMode } = useThemeStore();
-
+  const { playSelectedSong } = useAudioPlayerStore();
   return (
     <div
-      onClick={() => handleSelectedSong(musicInfo)}
+      onClick={() => playSelectedSong(index)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{

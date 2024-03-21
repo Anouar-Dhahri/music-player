@@ -4,7 +4,7 @@ import { MusicPlaylist } from "../../constants";
 import MusicItem from "./musicItem";
 import useThemeStore from "../../store/themeStore";
 
-function Library({ open, handleDrawer, handleSelectedSong }: any) {
+function Library({ open, handleDrawer }: any) {
   const { darkMode } = useThemeStore();
   return (
     <Drawer
@@ -28,7 +28,7 @@ function Library({ open, handleDrawer, handleSelectedSong }: any) {
           <MusicItem
             key={index}
             musicInfo={data}
-            handleSelectedSong={handleSelectedSong}
+            index={index}
           />
         ))}
       </Flex>

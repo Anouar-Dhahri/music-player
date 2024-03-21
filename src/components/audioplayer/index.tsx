@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Button, Typography } from "antd";
+import { Layout, Button, Typography, Tooltip } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -9,14 +9,18 @@ import {
 import WavesurferPlayer from "@wavesurfer/react";
 import coverImages from "../../assets";
 import useSkinStore from "../../store/skinStore";
+import useAudioPlayerStore from "../../store/audioPlayerStore";
 
-function AudioPlayer({ selectedAudio }: any) {
+function AudioPlayer() {
+  const { selectedAudio, startPlaying, nextSong, previousSong } =
+    useAudioPlayerStore();
   const [wavesurfer, setWavesurfer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { skin } = useSkinStore();
   const [songDuration, setSongDuration] = useState("00:00");
   const [currentTime, setCurrentTime] = useState("00:00");
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -110,7 +114,7 @@ function AudioPlayer({ selectedAudio }: any) {
         }}
       />
 
-      <div style={{ width: "100%" , textAlign:"center"}}>
+      <div style={{ width: "100%", textAlign: "center" }}>
         <Typography.Text style={{ fontWeight: 700, fontSize: "2rem" }}>
           {" "}
           {currentTime} | {songDuration}
@@ -148,22 +152,32 @@ function AudioPlayer({ selectedAudio }: any) {
           flexDirection: "row",
           justifyContent: "space-around",
         }}>
-        <Button
-          icon={<LeftOutlined />}
-          size="large"
-          style={{ width: "50px", height: "50px", borderRadius: "10px" }}
-        />
-        <Button
-          icon={isPlaying ? <PauseOutlined /> : <PlayCircleOutlined />}
-          size="large"
-          onClick={onPlayPause}
-          style={{ width: "50px", height: "50px", borderRadius: "10px" }}
-        />
-        <Button
-          icon={<RightOutlined />}
-          size="large"
-          style={{ width: "50px", height: "50px", borderRadius: "10px" }}
-        />
+        <Tooltip title="Previous Song">
+          <Button
+            icon={<LeftOutlined />}
+            size="large"
+            style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+            onClick={previousSong}
+            disabled={!selectedAudio ? true : false}
+          />
+        </Tooltip>
+        <Tooltip title="Play / Pause">
+          <Button
+            icon={isPlaying ? <PauseOutlined /> : <PlayCircleOutlined />}
+            size="large"
+            onClick={!selectedAudio ? startPlaying : onPlayPause}
+            style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+          />
+        </Tooltip>
+        <Tooltip title="Next Song">
+          <Button
+            icon={<RightOutlined />}
+            size="large"
+            style={{ width: "50px", height: "50px", borderRadius: "10px" }}
+            disabled={!selectedAudio ? true : false}
+            onClick={nextSong}
+          />
+        </Tooltip>
       </div>
     </Layout.Content>
   );

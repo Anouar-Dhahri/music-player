@@ -6,19 +6,12 @@ import useThemeStore from "../store/themeStore";
 function MainLayout() {
   const [open, setOpen] = useState(false);
 
-  const [audio, setAudio] = useState(null);
-
   const { darkMode } = useThemeStore();
 
   const handleDrawer = () => {
     setOpen(!open);
   };
-
-  const handleSelectedSong = (audio: any) => {
-    console.log("audio ==>", audio);
-    setAudio(audio);
-  };
-
+  
   return (
     <Layout
       style={{
@@ -31,9 +24,8 @@ function MainLayout() {
       <Library
         open={open}
         handleDrawer={handleDrawer}
-        handleSelectedSong={handleSelectedSong}
       />
-      <AudioPlayer selectedAudio={audio} />
+      <AudioPlayer />
     </Layout>
   );
 }
