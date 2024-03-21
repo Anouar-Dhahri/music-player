@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Layout,
   Flex,
@@ -21,7 +21,7 @@ import { skinsList } from "../../constants";
 
 function HeaderContent({ handleDrawer }: any) {
   const { darkMode, enableDarkMode, enableLightMode } = useThemeStore();
-  const { skin, changeSkin } = useSkinStore();
+  const { changeSkin } = useSkinStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {

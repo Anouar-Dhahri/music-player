@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Layout, Button, Typography, Tooltip } from "antd";
 import {
   LeftOutlined,
@@ -14,7 +14,7 @@ import useAudioPlayerStore from "../../store/audioPlayerStore";
 function AudioPlayer() {
   const { selectedAudio, startPlaying, nextSong, previousSong } =
     useAudioPlayerStore();
-  const [wavesurfer, setWavesurfer] = useState(null);
+  const [wavesurfer, setWavesurfer] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { skin } = useSkinStore();
@@ -65,7 +65,9 @@ function AudioPlayer() {
   const onPlayPause = () => {
     setIsPlaying(false);
     console.log("wavesurfer", wavesurfer);
-    wavesurfer && wavesurfer.playPause();
+    if (wavesurfer) {
+      wavesurfer.playPause();
+    }
   };
 
   return (

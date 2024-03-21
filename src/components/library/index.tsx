@@ -1,4 +1,3 @@
-import React from "react";
 import { Drawer, Flex, Typography, Divider } from "antd";
 import { MusicPlaylist } from "../../constants";
 import MusicItem from "./musicItem";

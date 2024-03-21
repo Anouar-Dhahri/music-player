@@ -6,7 +6,7 @@ interface skinInterface {
 }
 type Store = {
   skin: skinInterface;
-  changeSkin: () => void;
+  changeSkin: (selectedSkin: skinInterface) => void;
 };
 
 const useSkinStore = create<Store>((set) => ({

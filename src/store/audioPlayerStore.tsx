@@ -10,7 +10,7 @@ interface MusicInterface {
 
 type Store = {
   selectedAudio: MusicInterface | null;
-  currentSongIndex: number | null;
+  currentSongIndex: number;
   startPlaying: () => void;
   playSelectedSong: (currentSongIdx: number) => void;
   nextSong: () => void;
@@ -19,7 +19,7 @@ type Store = {
 
 const useAudioPlayerStore = create<Store>((set, get) => ({
   selectedAudio: null,
-  currentSongIndex: null,
+  currentSongIndex: 0,
   startPlaying: () =>
     set({ selectedAudio: MusicPlaylist[0], currentSongIndex: 0 }),
   playSelectedSong: (currentSongIdx) =>

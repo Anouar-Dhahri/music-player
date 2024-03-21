@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Typography } from "antd";
 import useThemeStore from "../../store/themeStore";
 import useAudioPlayerStore from "../../store/audioPlayerStore";
