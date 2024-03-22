@@ -131,6 +131,7 @@ function AudioPlayer() {
           style={{
             width: "95%",
             maxWidth: "95%", // Limit the maximum width if needed
+            margin: "auto",
           }}>
           <WavesurferPlayer
             // key={waveSurferWidth}
